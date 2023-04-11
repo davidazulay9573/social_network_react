@@ -1,7 +1,7 @@
 import { useState } from "react";
 import React, { useRef } from "react";
 
-import { PostObj, UserObj, CommentObj } from "./oop/objects";
+import { PostObj, UserObj, CommentObj } from "../oop/objects";
 
 import ButtonsMenu from "./buttonsMenu";
 import Feed from "./Feed";
@@ -9,7 +9,7 @@ import Profile from "./Profile";
 import FormRegisterOrLogin from "./FormRegisterOrLogin";
 import FormAddPost from "./FormAddPost";
 import ProfilePicture from "./ProfilePicture";
-import useStatePersist from "./hooks/useStatePersist";
+import useStatePersist from "../hooks/useStatePersist";
 import UsersPage from "./UsersPage";
 
 let userWatching = null;
@@ -30,7 +30,7 @@ function SocialNetwork() {
     if (registersInput.img !== "") {
       const newUser = new UserObj(
         registersInput.userName,
-        URL.createObjectURL(registersInput.img)
+        registersInput.img
       );
       setAllUsersAndSave((allUsers) => [...allUsers, newUser]);
     } else {
@@ -272,6 +272,3 @@ function SocialNetwork() {
   );
 }
 export default SocialNetwork;
-
-// localStorage.removeItem('users')
-// localStorage.removeItem("posts");
