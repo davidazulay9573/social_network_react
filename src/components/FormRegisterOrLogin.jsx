@@ -1,13 +1,10 @@
 
-import { useState } from "react";
+
 import useInput from "../hooks/useInput";
 import ProfilePicture from "./ProfilePicture";
-function FormRegisterOrLogin({ buttonTitle,onSubmit}) {
-  
-  const [handleInputChange, handleSubmit, input,displayInput] = useInput(
-    { userName: "", password: "", img: null},
-    onSubmit,
-  );
+function FormRegisterOrLogin({ buttonTitle, onSubmit, validation }) {
+  const [handleInputChange, handleSubmit, input, displayInput, error] =
+    useInput({ userName: "", password: "", img: null }, onSubmit,validation)
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -15,8 +12,13 @@ function FormRegisterOrLogin({ buttonTitle,onSubmit}) {
         style={{ height: "70px", width: "70px" }}
         className="profilepicture"
       >
-        <input name="img" type="file" onInput={handleInputChange} style={{display:displayInput}} />
-        <ProfilePicture user={{profilePicture:input.img}} ></ProfilePicture>
+        <input
+          name="img"
+          type="file"
+          onInput={handleInputChange}
+          style={{ display: displayInput }}
+        />
+        <ProfilePicture user={{ profilePicture: input.img }}></ProfilePicture>
       </span>
       <br />
       <br />
@@ -24,10 +26,11 @@ function FormRegisterOrLogin({ buttonTitle,onSubmit}) {
         name="userName"
         type="text"
         value={input.userName}
-        onInput={handleInputChange}
+        onChange={handleInputChange}
         className="form-control"
         placeholder="User name"
       />
+      {error ? <div className="text-danger">{error}</div> : null}
       <br />
 
       <div style={{ display: "flex" }}>
@@ -35,7 +38,7 @@ function FormRegisterOrLogin({ buttonTitle,onSubmit}) {
           name="password"
           type="password"
           value={input.password}
-          onInput={handleInputChange}
+          onChange={handleInputChange}
           className="form-control"
           placeholder="Password"
         />

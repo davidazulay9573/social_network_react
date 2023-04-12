@@ -17,10 +17,7 @@ let userWatching = null;
 function SocialNetwork() {
   const [allUsers, setAllUsersAndSave] = useStatePersist("users", []);
   const [allPosts, setAllPostsAndSave] = useStatePersist("posts", []);
-
   const [postsView, setPostView] = useState([]);
-  // const [usersView, setUsersView] = useState([]);
-
   const [view, setView] = useState("");
   const [loginButton, setLoginButton] = useState("");
   const [buttonsMenu, setButtonsMenu] = useState("none");
@@ -58,7 +55,6 @@ function SocialNetwork() {
       alert("You need to register");
     }
   };
-
   const handleAddPost = (content) => {
     const newPost = new PostObj(userWatching, content);
     setAllPostsAndSave((allPosts) => [...allPosts, newPost]);
@@ -133,7 +129,9 @@ function SocialNetwork() {
 
   const viewFormRegister = () => {
     setView(
-      <FormRegisterOrLogin buttonTitle={"Register"} onSubmit={handleRegister} />
+      <FormRegisterOrLogin buttonTitle={"Register"} onSubmit={handleRegister} validation={(inputs) =>
+      inputs.userName.length < 2 ? "must be at least 2 characters" : null
+ } />
     );
   };
   const viewFormLogin = () => {
