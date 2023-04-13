@@ -5,7 +5,11 @@ import Comment from "./Comment";
 export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
   const [comment, setComment] = useState([]);
   const [input, setInput] = useState("");
-
+   const handleSubmit = () => {
+    addComment(post, input);
+    setComment([post.comments.find((cmt) => cmt.content === input)]);
+    setInput('')
+   }
   return (
     <div>
       <div
@@ -41,16 +45,13 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
             }`}
             onClick={addLike}
           ></i>
+          {post.comments.length}
 
           <i
             style={{ flex: 0.5 }}
             className="bi bi-chat"
             onClick={() => {
-              comment.length === 0
-                ? setComment(post.comments)
-                : comment.length && comment[0].content === input
-                ? setComment(post.comments)
-                : setComment([]);
+              comment.length === 0 ? setComment(post.comments) : setComment([]);
             }}
           ></i>
         </span>
@@ -64,24 +65,22 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
         }}
       >
         <span>
-          <input
-            style={{ flex: 8 }}
-            type="text"
-            className="form-control"
-            placeholder="Type comment..."
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                addComment(post, input);
-                setComment([
-                  post.comments.find((cmt) => cmt.content === input),
-                ]);
-              }
-            }}
-          />
+          <span style={{ display: "flex" }}>
+            <textarea
+              style={{ flex: 8 }}
+              type="text"
+              className="form-control"
+              placeholder="Type comment..."
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+              }}
+            />
+            <button className="btn btn-light" onClick={handleSubmit}>
+              <i className="bi bi-file-earmark-plus"></i>
+            </button>
+          </span>
+
           <br />
           {comment.map((comment) => (
             <Comment

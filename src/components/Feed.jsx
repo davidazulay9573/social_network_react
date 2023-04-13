@@ -7,7 +7,7 @@ function Feed({postslist =[],addLike,addComment, viewProfile,loggedOnUser}){
     <div>
       <br />
       {postslist
-        .sort((a, b) => b.likes.length - a.likes.length)
+        .sort((a, b) => b.rating - a.rating)
         .map((post) => (
           <Post
             key={post.id}

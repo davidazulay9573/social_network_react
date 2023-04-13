@@ -27,13 +27,13 @@ function useFeed(loggedOnUser, setView = () => {}){
           return post;
         });
       };
-   
+      setPostRating(postPR);
       setAllPostsAndSave((allPosts) => mapPosts(allPosts));
       setView(mapPosts)
     };
 
     const handleAddComment = (postPR, content) => {
-      const newComment = new CommentObj(loggedOnUser.id, content);
+      const newComment = new CommentObj(loggedOnUser, content);
       postPR.comments.push(newComment);
       const mapPosts = (posts) => {
         return posts.map((post) => {
@@ -43,12 +43,15 @@ function useFeed(loggedOnUser, setView = () => {}){
           return post;
         });
       };
-   
+      setPostRating(postPR)
       setAllPostsAndSave((allPosts) => mapPosts(allPosts));
       setView(mapPosts);
 
       return newComment;
     };
+     const setPostRating = (post) =>{
+       post.rating = (post.comments.length * 2) + post.likes.length;
+      }
     return  [ handleAddPost,handleAddLike,handleAddComment,allPosts]
 
 }

@@ -9,12 +9,12 @@ function ProfilePicture({user ,size,viewProfile}){
           <img
             className="rounded-circle"
             style={{ flex: 2, width: "100%", height: "100%" }}
-            src={user ? user.profilePicture: ''}
+            src={ user.profilePicture}
             alt=""
             onClick={() => viewProfile(user)}
           ></img>
         </span>
-        <p> {user ? user.userName : ''}</p>
+        <p> {user.userName}</p>
       </div>
     );
 }

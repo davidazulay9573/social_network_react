@@ -17,6 +17,7 @@ export class PostObj {
     this.id = uuid();
     this.likes = [];
     this.comments = [];
+    this.rating = 0;
   }
 }
 export class CommentObj extends PostObj{

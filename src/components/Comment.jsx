@@ -1,29 +1,27 @@
 import ProfilePicture from "./ProfilePicture";
 function Comment({ comment, addLike, viewProfile }) {
- if(comment){
-  return (
-    <div style={{display:'flex'}}>
-      <ProfilePicture
-        user={comment.userUp}
-        size={30}
-        viewProfile={viewProfile}
-      ></ProfilePicture>
+  if (comment) {
+    return (
+      <div style={{ display: "flex", whiteSpace: "pre-wrap" }}>
+        <ProfilePicture
+          user={comment.userUp}
+          size={30}
+          viewProfile={viewProfile}
+        ></ProfilePicture>
 
-      <div
-        style={{
-          width: "60%",
-          margin: "5%",
-          borderRadius: "10px",
-          borderStyle: "inset",
-          backgroundColor:'wheat'
-        }}
-      >
-        <p>{comment.content}</p>
+        <div
+          style={{
+            margin: "5%",
+            padding:'5%',
+            borderRadius: "10px",
+            borderStyle: "inset",
+            backgroundColor: "wheat",
+          }}
+        >
+          <p>{comment.content}</p>
+        </div>
       </div>
-    </div>
-  );
- }
-   
+    );
+  }
 }
-
 export default Comment;
