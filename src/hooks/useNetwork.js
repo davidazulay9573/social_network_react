@@ -10,13 +10,8 @@ function useNetwork(
 ) {
   const [allUsers, setAllUsersAndSave] = useStatePersist("users", []);
   const handleRegister = (registersInput) => {
-    if (registersInput.img !== "") {
       const newUser = new UserObj(registersInput.userName, registersInput.img);
       setAllUsersAndSave((allUsers) => [...allUsers, newUser]);
-    } else {
-      const newUser = new UserObj(registersInput.userName);
-      setAllUsersAndSave((allUsers) => [...allUsers, newUser]);
-    }
   };
 
   const handleLogin = (loginInput) => {

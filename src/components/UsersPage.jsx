@@ -47,7 +47,8 @@ function UsersPage({
             (user) =>
               user.id !== loggedOnUser.id &&
               !loggedOnUser.friends.includes(user.id) &&
-              !loggedOnUser.friendRequests.includes(user.id)
+              !loggedOnUser.friendRequests.includes(user.id) &&
+              !user.friendRequests.includes(loggedOnUser.id)
           )}
           viewProfile={viewProfile}
           loggedOnUser={loggedOnUser}
