@@ -2,10 +2,10 @@ import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import Comment from "./Comment";
 
-export function Post({ post, addLike, addComment, viewProfile, userWatching }) {
- const [comment, setComment] = useState([]);
-  const [input, setInput] = useState('');
-  
+export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
+  const [comment, setComment] = useState([]);
+  const [input, setInput] = useState("");
+
   return (
     <div>
       <div
@@ -37,7 +37,7 @@ export function Post({ post, addLike, addComment, viewProfile, userWatching }) {
           <i
             style={{ flex: 0.5 }}
             className={`bi bi-hand-thumbs-up${
-              post.likes.includes(userWatching.id) ? "-fill" : ""
+              post.likes.includes(loggedOnUser.id) ? "-fill" : ""
             }`}
             onClick={addLike}
           ></i>

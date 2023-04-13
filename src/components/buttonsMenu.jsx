@@ -4,7 +4,7 @@ function ButtonsMenu(props) {
       <div style={{ textAlign: "center" }}>
         <br />
         <button
-          style={{ display: props.buttonsMenu }}
+          style={{ display: props.display }}
           className="btn btn-light"
           onClick={props.viewMyProfile}
         >
@@ -12,7 +12,7 @@ function ButtonsMenu(props) {
         </button>
         <br />
         <button
-          style={{ display: props.buttonsMenu }}
+          style={{ display: props.display }}
           className="btn btn-light "
           onClick={props.viewUsersList}
         >
@@ -20,7 +20,7 @@ function ButtonsMenu(props) {
         </button>
         <br />
         <button
-          style={{ display: props.buttonsMenu }}
+          style={{ display: props.display }}
           className="btn btn-light "
           onClick={props.viewFormAddPost}
         >
@@ -38,7 +38,7 @@ function ButtonsMenu(props) {
 
         {/* <br /> */}
         <button
-          style={{ display: props.buttonsMenu }}
+          style={{ display: props.display }}
           className="btn btn-light"
           onClick={props.viewFeed}
         >
@@ -46,7 +46,7 @@ function ButtonsMenu(props) {
         </button>
         <br />
         <button
-          style={{ display: props.buttonsMenu }}
+          style={{ display: props.display }}
           className="btn btn-light"
           onClick={props.viewFeed}
         >

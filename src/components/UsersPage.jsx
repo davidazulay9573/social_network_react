@@ -1,7 +1,7 @@
 import UsersList from "./UsersList";
 function UsersPage({
   allUsers,
-  userWatching,
+  loggedOnUser,
   viewProfile,
   handleFriendRequest,
   handleConfirm,
@@ -13,10 +13,10 @@ function UsersPage({
         <br />
         <UsersList
           userslist={allUsers.filter((user) =>
-            userWatching.friends.includes(user.id)
+            loggedOnUser.friends.includes(user.id)
           )}
           viewProfile={viewProfile}
-          userWatching={userWatching}
+          loggedOnUser={loggedOnUser}
           onSubmits={[console.log, console.log]}
           buttonsTitle={[
             <i className="bi bi-chat-dots"></i>,
@@ -29,10 +29,10 @@ function UsersPage({
         <h5>Friend requests</h5>
         <UsersList
           userslist={allUsers.filter((user) =>
-            userWatching.friendRequests.includes(user.id)
+            loggedOnUser.friendRequests.includes(user.id)
           )}
           viewProfile={viewProfile}
-          userWatching={userWatching}
+          loggedOnUser={loggedOnUser}
           onSubmits={[handleConfirm, console.log]}
           buttonsTitle={[
             <i className="bi bi-check-circle"></i>,
@@ -45,12 +45,12 @@ function UsersPage({
         <UsersList
           userslist={allUsers.filter(
             (user) =>
-              user.id !== userWatching.id &&
-              !userWatching.friends.includes(user.id) &&
-              !userWatching.friendRequests.includes(user.id)
+              user.id !== loggedOnUser.id &&
+              !loggedOnUser.friends.includes(user.id) &&
+              !loggedOnUser.friendRequests.includes(user.id)
           )}
           viewProfile={viewProfile}
-          userWatching={userWatching}
+          loggedOnUser={loggedOnUser}
           onSubmits={[handleFriendRequest, console.log]}
           buttonsTitle={[
             <i className="bi bi-person-fill-add"></i>,

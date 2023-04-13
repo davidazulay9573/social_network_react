@@ -1,7 +1,7 @@
 
 import { Post } from "./Post"
 
-function Feed({postslist =[],addLike,addComment, viewProfile,userWatching}){ 
+function Feed({postslist =[],addLike,addComment, viewProfile,loggedOnUser}){ 
 
   return (
     <div>
@@ -15,7 +15,7 @@ function Feed({postslist =[],addLike,addComment, viewProfile,userWatching}){
             viewProfile={viewProfile}
             addLike={() => addLike(post)}
             addComment={addComment}
-            userWatching={userWatching}
+            loggedOnUser={loggedOnUser}
           />
         ))}
     </div>
