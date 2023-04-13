@@ -4,12 +4,12 @@ import React, { useRef } from "react";
 import useNetwork from "../hooks/useNetwork";
 import useFeed from "../hooks/useFeed";
 
+import Header from "./Header";
 import ButtonsMenu from "./buttonsMenu";
 import Feed from "./Feed";
 import Profile from "./Profile";
 import FormRegisterOrLogin from "./FormRegisterOrLogin";
 import FormAddPost from "./FormAddPost";
-import ProfilePicture from "./ProfilePicture";
 import UsersPage from "./UsersPage";
 
 
@@ -44,7 +44,6 @@ function SocialNetwork() {
   const [display, setDisplay] = useState({beforeLogin:'', afterLogin:'none'});
   const centralContainerRef = useRef(null);
   
-
   const viewRegisterForm = () => {
     setView(
       <FormRegisterOrLogin buttonTitle={"Register"} onSubmit={handleRegister} validation={(inputs) =>
@@ -90,49 +89,19 @@ function SocialNetwork() {
            loggedOnUser.id === post.userUp.id
       )
     );
+    centralContainerRef.current.scrollTop = 0;
+
   };
 
   return (
     <>
-      <header
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.400)",
-          color: "white",
-          padding: "25px",
-          textAlign: "center",
-          display: "flex",
-        }}
-      >
-        <div style={{ flex: "6", textAlign: "left" }}>
-          <h1>Social network</h1>
-        </div>
-        <button
-          style={{ display: display.beforeLogin }}
-          className="btn btn-light"
-          onClick={viewRegisterForm}
-        >
-          Register
-        </button>
-        <br />
-        <button
-          style={{ display: display.beforeLogin }}
-          className="btn btn-light "
-          onClick={viewLoginForm}
-        >
-          Login
-        </button>
-        { loggedOnUser ? (
-          <ProfilePicture
-            user={ loggedOnUser}
-            size="50px"
-            viewProfile={viewProfile}
-          ></ProfilePicture>
-        ) : (
-          ""
-        )}
-
-        {/* <Search onSubmit={viewResultSearch}></Search> */}
-      </header>
+      <Header
+        loggedOnUser={loggedOnUser}
+        display={display}
+        viewLoginForm={viewLoginForm}
+        viewRegisterForm={viewRegisterForm}
+        viewProfile={viewProfile}
+      ></Header>
 
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div
@@ -157,7 +126,7 @@ function SocialNetwork() {
                 addLike={handleAddLike}
                 addComment={handleAddComment}
                 viewProfile={viewProfile}
-                 loggedOnUser={ loggedOnUser}
+                loggedOnUser={loggedOnUser}
               />
             </span>
             <span style={{ flex: 2 }}></span>
@@ -179,7 +148,7 @@ function SocialNetwork() {
             viewUsersList={viewUsersList}
             viewFormAddPost={viewFormAddPost}
             viewFeed={viewFeed}
-            viewMyProfile={() => viewProfile( loggedOnUser)}
+            viewMyProfile={() => viewProfile(loggedOnUser)}
           />
         </div>
       </div>

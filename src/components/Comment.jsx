@@ -11,8 +11,8 @@ function Comment({ comment, addLike, viewProfile }) {
 
         <div
           style={{
-            margin: "5%",
-            padding:'5%',
+            margin: "2%",
+            padding:'2%',
             borderRadius: "10px",
             borderStyle: "inset",
             backgroundColor: "wheat",

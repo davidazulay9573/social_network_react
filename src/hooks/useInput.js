@@ -4,6 +4,7 @@ function useInput(initialValues, onSubmit = () => {}, validation = () => {}) {
   const [inputs, setInputs] = useState(initialValues);
   const [displayInput, setDisplayInput] = useState("");
   const [error, setError] = useState(null);
+ 
   const handleInputChange = (event) => {
     const target = event.target;
     const value =
