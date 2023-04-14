@@ -13,7 +13,7 @@ function Feed({postslist =[],addLike,addComment, viewProfile,loggedOnUser}){
             key={post.id}
             post={post}
             viewProfile={viewProfile}
-            addLike={() => addLike(post)}
+            addLike={addLike}
             addComment={addComment}
             loggedOnUser={loggedOnUser}
           />

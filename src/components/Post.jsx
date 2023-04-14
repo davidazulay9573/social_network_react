@@ -43,9 +43,9 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
             className={`bi bi-hand-thumbs-up${
               post.likes.includes(loggedOnUser.id) ? "-fill" : ""
             }`}
-            onClick={addLike}
+            onClick={() => addLike(post)}
           ></i>
-          {post.comments.length}
+           {post.comments.length}
 
           <i
             style={{ flex: 0.5 }}
@@ -85,8 +85,9 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
           {comment.map((comment) => (
             <Comment
               key={comment.id}
+              loggedOnUser={loggedOnUser}
               comment={comment}
-              addLike={addLike}
+              addLike={() => addLike(post,comment)}
               viewProfile={viewProfile}
             />
           ))}
