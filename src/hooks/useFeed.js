@@ -7,7 +7,6 @@ function useFeed(loggedOnUser, setView = () => {}){
  
   const handleAddPost = (content) => {
       const newPost = new PostObj(loggedOnUser, content);
-      console.log(newPost);
       setAllPostsAndSave((allPosts) => [...allPosts, newPost]);
       setView([newPost])
     };
