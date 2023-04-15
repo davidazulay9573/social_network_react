@@ -2,13 +2,16 @@ import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import Comment from "./Comment";
 
+
 export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
   const [comment, setComment] = useState([]);
+  const [likesList,setLikesList] = useState([]);
   const [input, setInput] = useState("");
    const handleSubmit = () => {
     addComment(post, input);
     setComment([post.comments.find((cmt) => cmt.content === input)]);
     setInput('')
+   
    }
   return (
     <div>
@@ -22,40 +25,66 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
           backgroundColor: "white",
         }}
       >
-        <span style={{ padding: "1%" }}>
+        <div style={{ padding: "1%" }}>
           <ProfilePicture
             user={post.userUp}
             size={40}
             viewProfile={viewProfile}
           ></ProfilePicture>
-        </span>
-        <span
+        </div>
+        <div
           className="conteiner"
           style={{ flex: 5, padding: "5%", whiteSpace: "pre-wrap" }}
         >
           {post.content}
           <br />
-        </span>
-        <span>
-          {post.likes.length}
-          <i
-            style={{ flex: 0.5 }}
-            className={`bi bi-hand-thumbs-up${
-              post.likes.includes(loggedOnUser.id) ? "-fill" : ""
-            }`}
-            onClick={() => addLike(post)}
-          ></i>
-           {post.comments.length}
-
-          <i
-            style={{ flex: 0.5 }}
-            className="bi bi-chat"
+        </div>
+       
+        <div>
+          <span
             onClick={() => {
-              comment.length === 0 ? setComment(post.comments) : setComment([]);
+              likesList.length === 0
+                ? setLikesList(post.likes)
+                : setLikesList([]);
             }}
-          ></i>
-        </span>
+          >
+            {post.likes.length}
+            <i
+              style={{ flex: 0.5 }}
+              className={`bi bi-hand-thumbs-up${
+                post.likes
+                  .map((userLiked) => userLiked.id)
+                  .includes(loggedOnUser.id)
+                  ? "-fill"
+                  : ""
+              }`}
+              onClick={() => addLike(post)}
+            ></i>
+          </span>
+          <span>
+            {post.comments.length}
+            <i
+              style={{ flex: 0.5 }}
+              className="bi bi-chat"
+              onClick={() => {
+                comment.length === 0
+                  ? setComment(post.comments)
+                  : setComment([]);
+                setLikesList([]);
+              }}
+            ></i>
+          </span>
+        </div>
+        {likesList.map((userLiked) => (
+          <ProfilePicture
+            key={userLiked.id}
+            user={userLiked}
+            size={25}
+            viewProfile={viewProfile}
+          />
+        ))}
       </div>
+
       <div
         style={{
           display: "flex",
@@ -74,6 +103,7 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
               value={input}
               onChange={(e) => {
                 setInput(e.target.value);
+                setLikesList([])
               }}
             />
             <button className="btn btn-light" onClick={handleSubmit}>
@@ -87,7 +117,7 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
               key={comment.id}
               loggedOnUser={loggedOnUser}
               comment={comment}
-              addLike={() => addLike(post,comment)}
+              addLike={() => addLike(post, comment)}
               viewProfile={viewProfile}
             />
           ))}

@@ -1,5 +1,8 @@
+import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 function Comment({ loggedOnUser, comment, addLike, viewProfile }) {
+  const [likesList, setLikesList] = useState([]);
+
   if (comment) {
     return (
       <div style={{ display: "flex", whiteSpace: "pre-wrap" }}>
@@ -8,7 +11,6 @@ function Comment({ loggedOnUser, comment, addLike, viewProfile }) {
           size={30}
           viewProfile={viewProfile}
         ></ProfilePicture>
-
         <div
           style={{
             margin: "2%",
@@ -19,14 +21,34 @@ function Comment({ loggedOnUser, comment, addLike, viewProfile }) {
           }}
         >
           <p>{comment.content}</p>
-          <i
-            style={{ flex: 0.5 }}
-            className={`bi bi-hand-thumbs-up${
-              comment.likes.includes(loggedOnUser.id) ? "-fill" : ""
-            }`}
-             onClick={addLike}
-          ></i>
+          <span
+            onClick={() => {
+              likesList.length === 0
+                ? setLikesList(comment.likes)
+                : setLikesList([]);
+            }}
+          >
+            <i
+              style={{ flex: 0.5 }}
+              className={`bi bi-hand-thumbs-up${
+                comment.likes
+                  .map((userLiked) => userLiked.id)
+                  .includes(loggedOnUser.id)
+                  ? "-fill"
+                  : ""
+              }`}
+              onClick={addLike}
+            ></i>
             {comment.likes.length}
+          </span>
+          {likesList.map((userLiked) => (
+            <ProfilePicture
+              key={userLiked.id}
+              user={userLiked}
+              size={20}
+              viewProfile={viewProfile}
+            />
+          ))}
         </div>
 
         {/* <i

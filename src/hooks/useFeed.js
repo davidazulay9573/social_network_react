@@ -13,13 +13,13 @@ function useFeed(loggedOnUser, setView = () => {}){
 
    const handleAddLike = (postPR, commentPR) => {
      if (commentPR) {
-       commentPR.likes.includes(loggedOnUser.id)
-         ? commentPR.likes.splice(commentPR.likes.indexOf(loggedOnUser.id), 1)
-         : commentPR.likes.push(loggedOnUser.id);
+       commentPR.likes.map((userLiked) => userLiked.id).includes(loggedOnUser.id)
+         ? commentPR.likes.splice(commentPR.likes.indexOf(loggedOnUser), 1)
+         : commentPR.likes.push(loggedOnUser);
      } else {
-       postPR.likes.includes(loggedOnUser.id)
-         ? postPR.likes.splice(postPR.likes.indexOf(loggedOnUser.id), 1)
-         : postPR.likes.push(loggedOnUser.id);
+       postPR.likes.map((userLiked) => userLiked.id).includes(loggedOnUser.id)
+         ? postPR.likes.splice(postPR.likes.indexOf(loggedOnUser), 1)
+         : postPR.likes.push(loggedOnUser);
      }
 
      const mapPosts = (posts) => {
@@ -53,7 +53,7 @@ function useFeed(loggedOnUser, setView = () => {}){
     return newComment;
   };
  
-  const setPostRating = (post) => {
+  const setPostRating = (post) => { 
      post.rating = post.comments.length * 2 + post.likes.length;
    };
    return [handleAddPost, handleAddLike, handleAddComment, allPosts];

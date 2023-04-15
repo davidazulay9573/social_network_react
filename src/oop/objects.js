@@ -14,6 +14,7 @@ export class PostObj {
   constructor(userUp, content) {
     this.userUp = userUp;
     this.content = content;
+    this.createAt = new Date().getTime();
     this.id = uuid();
     this.likes = [];
     this.comments = [];
