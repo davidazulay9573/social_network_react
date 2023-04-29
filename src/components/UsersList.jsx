@@ -2,7 +2,7 @@
 import ProfilePicture from "./ProfilePicture";
 
 function UsersList({userslist,viewProfile,onSubmits=[() =>{}, ()=>{}],buttonsTitle}){
-   return (
+ return (
      <div style={{ display: "flex", flexDirection: "column" }}>
        {userslist.map((user) => (
          <span key={user.id}>
@@ -24,7 +24,7 @@ function UsersList({userslist,viewProfile,onSubmits=[() =>{}, ()=>{}],buttonsTit
          </span>
        ))}
      </div>
-   );
+   )
 }
 
 export default UsersList;

@@ -1,10 +1,8 @@
-
-
 import useInput from "../hooks/useInput";
 import ProfilePicture from "./ProfilePicture";
 function FormRegisterOrLogin({ buttonTitle, onSubmit, validation }) {
-  const [handleInputChange, handleSubmit, input, displayInput, error] =
-    useInput({ userName: "", password: "", img: null }, onSubmit,validation)
+  const [input, handleInputChange, handleSubmit, error, displayInput] =
+    useInput({ userName: "", password: "", img: null }, onSubmit, validation);
 
   return (
     <div style={{ textAlign: "center" }}>

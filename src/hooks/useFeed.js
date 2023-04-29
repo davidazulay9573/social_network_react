@@ -30,9 +30,9 @@ function useFeed(loggedOnUser, setView = () => {}){
          return post;
        });
      };
-     setPostRating(postPR);
      setAllPostsAndSave((allPosts) => mapPosts(allPosts));
      setView(mapPosts);
+     setPostRating(postPR);
    };
 
   const handleAddComment = (postPR, content) => {
@@ -48,7 +48,7 @@ function useFeed(loggedOnUser, setView = () => {}){
     };
     setPostRating(postPR);
     setAllPostsAndSave((allPosts) => mapPosts(allPosts));
-    setView(mapPosts);
+    setView([postPR]);
 
     return newComment;
   };

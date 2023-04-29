@@ -12,7 +12,6 @@ import FormRegisterOrLogin from "./FormRegisterOrLogin";
 import FormAddPost from "./FormAddPost";
 import UsersPage from "./UsersPage";
 
-
 function SocialNetwork() {
   const [
     loggedOnUser,
@@ -24,10 +23,11 @@ function SocialNetwork() {
   ] = useNetwork(
     (loggedOnUser) => {
       setDisplay({ beforeLogin: "none", afterLogin: "flex" });
+      setFormView(null)
       viewProfile(loggedOnUser);
     },
     () => {
-      viewUsersList();
+      viewUsersList(allUsers);
     }
   );
   const [handleAddPost, handleAddLike, handleAddComment, allPosts] = useFeed(
@@ -38,52 +38,53 @@ function SocialNetwork() {
         : setPostView(PR);
     }
   );
-  
-  const [view, setView] = useState("");
+
   const [postsView, setPostView] = useState([]);
+  const [usersView, setUsersView] = useState([]);
+  const [addPostView, setAddPostView] = useState(false);
+  const [formView,setFormView] = useState(null);
+  const [profileView,setProfileView] = useState(null);
   const [display, setDisplay] = useState({beforeLogin:'', afterLogin:'none'});
   const centralContainerRef = useRef(null);
   
   const viewRegisterForm = () => {
-    setView(
-      <FormRegisterOrLogin buttonTitle={"Register"} onSubmit={handleRegister} validation={(inputs) =>
-      inputs.userName.length < 2 ? "must be at least 2 characters" : null
- } />
-    );
+    setFormView('register')
   };
   const viewLoginForm = () => {
-    setView(
-      <FormRegisterOrLogin buttonTitle={"Login"} onSubmit={handleLogin} />
-    );
+    setFormView('login')
   };
   const viewProfile = (user) => {
-   user ? setView(<Profile key={user.id} user={user} />) :setView('')
+    setProfileView(user);
+    setAddPostView(null)
+    setUsersView([]);
     setPostView(allPosts.filter((post) => post.userUp.id === user.id));
     centralContainerRef.current.scrollTop = 0;
   };
 
-  const viewUsersList = () => {
-    setView(
-      <UsersPage
-        allUsers={allUsers}
-         loggedOnUser={ loggedOnUser}
-        viewProfile={viewProfile}
-        handleFriendRequest={handleFriendRequest}
-        handleConfirm={handleConfirm}
-      ></UsersPage>
-    );
+  const viewUsersList = (users) => {
+    setUsersView(users)
+    setProfileView(null);
+    setAddPostView(false);
     setPostView([]);
+   
+
   };
 
   const viewFormAddPost = () => {
+    setProfileView(null);
+    setUsersView([]);
     setPostView([]);
-    setView(<FormAddPost onSubmit={handleAddPost} />);
+    setAddPostView(true);
+    
   };
 
-  const viewFeed = () => {
-    setView("");
+  const viewFeed = (posts) => {
+    setProfileView(null);
+    setFormView(null)
+    setUsersView([]);
+    setAddPostView(false);
     setPostView(
-      allPosts.filter(
+     posts.filter(
         (post) =>
            loggedOnUser.friends.includes(post.userUp.id) ||
            loggedOnUser.id === post.userUp.id
@@ -92,7 +93,15 @@ function SocialNetwork() {
     centralContainerRef.current.scrollTop = 0;
 
   };
-
+    
+  const viewResultSearch = (input) => {
+    setProfileView(null);
+    setUsersView([]);
+    setAddPostView(false);
+    postsView.length !== 0
+      ? viewFeed(allPosts.filter((post) => post.content.includes(input) || post.userUp.userName.includes(input)))
+      : viewUsersList(allUsers.filter((user) => user.userName.includes(input)));  
+  };
   return (
     <>
       <Header
@@ -101,6 +110,7 @@ function SocialNetwork() {
         viewLoginForm={viewLoginForm}
         viewRegisterForm={viewRegisterForm}
         viewProfile={viewProfile}
+        viewResultSearch={viewResultSearch}
       ></Header>
 
       <div style={{ display: "flex", flexDirection: "row" }}>
@@ -117,9 +127,43 @@ function SocialNetwork() {
         >
           <div style={{ display: "flex", flexDirection: "row", margin: "4%" }}>
             <span style={{ flex: 2 }}></span>
-
             <span style={{ flex: 4 }}>
-              {view}
+              {formView === "register" ? (
+                <FormRegisterOrLogin
+                  buttonTitle={"Register"}
+                  onSubmit={handleRegister}
+                  validation={(inputs) =>
+                    inputs.userName.length < 2
+                      ? "must be at least 2 characters"
+                      : null
+                  }
+                />
+              ) : (
+                <></>
+              )}
+              {formView === "login" ? (
+                <FormRegisterOrLogin
+                  buttonTitle={"Login"}
+                  onSubmit={handleLogin}
+                />
+              ) : (
+                <></>
+              )}
+
+              {profileView ? (
+                <Profile key={profileView.id} user={profileView} />
+              ) : (
+                <></>
+              )}
+              <UsersPage
+                users={usersView}
+                loggedOnUser={loggedOnUser}
+                viewProfile={viewProfile}
+                handleFriendRequest={handleFriendRequest}
+                handleConfirm={handleConfirm}
+              ></UsersPage>
+              {addPostView ? <FormAddPost onSubmit={handleAddPost} /> : <></>}
+
               <br />
               <Feed
                 postslist={postsView}
@@ -145,9 +189,11 @@ function SocialNetwork() {
           <br />
           <ButtonsMenu
             display={display.afterLogin}
-            viewUsersList={viewUsersList}
+            viewUsersList={() => {
+              viewUsersList(allUsers);
+            }}
             viewFormAddPost={viewFormAddPost}
-            viewFeed={viewFeed}
+            viewFeed={() => viewFeed(allPosts)}
             viewMyProfile={() => viewProfile(loggedOnUser)}
           />
         </div>

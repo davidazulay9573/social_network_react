@@ -1,5 +1,4 @@
-function ProfilePicture({user ,size,viewProfile}){
-   
+function ProfilePicture({user ,size,viewProfile}){ 
     if(user !== null ) return (
       <div>
         <span
@@ -18,4 +17,5 @@ function ProfilePicture({user ,size,viewProfile}){
       </div>
     );
 }
+
 export default ProfilePicture;

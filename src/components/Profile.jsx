@@ -1,5 +1,5 @@
 import ProfilePicture from "./ProfilePicture";
-function Profile({ user, viewPosts }) {
+function Profile({ user }) {
   return (
     <div style={{ textAlign: "center" }}>
       <br />

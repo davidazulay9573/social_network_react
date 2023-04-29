@@ -1,18 +1,18 @@
 import UsersList from "./UsersList";
 function UsersPage({
-  allUsers,
+  users,
   loggedOnUser,
   viewProfile,
   handleFriendRequest,
   handleConfirm,
 }) {
-  return (
+ if (users.length > 0) return (
     <div style={{ display: "flex", flexDirection: "row", margin: "4%" }}>
       <div style={{ flex: 3, textAlign: "center" }}>
-        <h5>Friends</h5>
+        <h3 className="border">Friends</h3>
         <br />
         <UsersList
-          userslist={allUsers.filter((user) =>
+          userslist={users.filter((user) =>
             loggedOnUser.friends.includes(user.id)
           )}
           viewProfile={viewProfile}
@@ -24,11 +24,11 @@ function UsersPage({
           ]}
         />
       </div>
-
+      <div style={{ flex: 3 }}></div>
       <div style={{ flex: 3, textAlign: "center" }}>
-        <h5>Friend requests</h5>
+        <h3 className="border">Friend requests</h3>
         <UsersList
-          userslist={allUsers.filter((user) =>
+          userslist={users.filter((user) =>
             loggedOnUser.friendRequests.includes(user.id)
           )}
           viewProfile={viewProfile}
@@ -40,10 +40,11 @@ function UsersPage({
           ]}
         />
       </div>
+      <div style={{ flex: 3}}></div>
       <div style={{ flex: 3, textAlign: "center" }}>
-        <h5>Find new friends</h5>
+        <h3 className="border">Find new friends</h3>
         <UsersList
-          userslist={allUsers.filter(
+          userslist={users.filter(
             (user) =>
               user.id !== loggedOnUser.id &&
               !loggedOnUser.friends.includes(user.id) &&

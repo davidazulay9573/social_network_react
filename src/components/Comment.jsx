@@ -2,7 +2,6 @@ import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 function Comment({ loggedOnUser, comment, addLike, viewProfile }) {
   const [likesList, setLikesList] = useState([]);
-
   if (comment) {
     return (
       <div style={{ display: "flex", whiteSpace: "pre-wrap" }}>

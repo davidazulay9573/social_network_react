@@ -1,17 +1,15 @@
 import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import Comment from "./Comment";
-
+import useInput from "../hooks/useInput";
 
 export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
   const [comment, setComment] = useState([]);
   const [likesList,setLikesList] = useState([]);
-  const [input, setInput] = useState("");
+  const [input, handleInputChange] = useInput("");
    const handleSubmit = () => {
     addComment(post, input);
     setComment([post.comments.find((cmt) => cmt.content === input)]);
-    setInput('')
-   
    }
   return (
     <div>
@@ -38,8 +36,7 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
         >
           {post.content}
           <br />
-        </div>
-       
+        </div>   
         <div>
           <span
             onClick={() => {
@@ -102,7 +99,7 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
               placeholder="Type comment..."
               value={input}
               onChange={(e) => {
-                setInput(e.target.value);
+                handleInputChange(e)
                 setLikesList([])
               }}
             />
