@@ -43,6 +43,7 @@ function FormRegisterOrLogin({ buttonTitle, onSubmit, validation }) {
       </div>
       <br />
       <button className="btn btn-dark" onClick={() => handleSubmit(input)}>
+        
         {buttonTitle}
       </button>
     </div>

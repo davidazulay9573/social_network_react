@@ -1,18 +1,24 @@
 import { useState } from "react";
 import React, { useRef } from "react";
+import { Routes, Route } from "react-router-dom";
 
 import useNetwork from "../hooks/useNetwork";
 import useFeed from "../hooks/useFeed";
 
 import Header from "./Header";
 import ButtonsMenu from "./buttonsMenu";
-import Feed from "./Feed";
-import Profile from "./Profile";
-import FormRegisterOrLogin from "./FormRegisterOrLogin";
-import FormAddPost from "./FormAddPost";
-import UsersPage from "./UsersPage";
+
+import UsersPage from "./pages/UsersPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage";
+import PersonalPage from "./pages/PersonalPage";
 
 function SocialNetwork() {
+  const setDisplay = useState()[1];
+  const centralContainerRef = useRef(null);
+  const [profileView, setProfileView] = useState(null);
+
   const [
     loggedOnUser,
     allUsers,
@@ -20,95 +26,32 @@ function SocialNetwork() {
     handleLogin,
     handleFriendRequest,
     handleConfirm,
-  ] = useNetwork(
-    (loggedOnUser) => {
-      setDisplay({ beforeLogin: "none", afterLogin: "flex" });
-      setFormView(null)
-      viewProfile(loggedOnUser);
-    },
-    () => {
-      viewUsersList(allUsers);
-    }
-  );
-  const [handleAddPost, handleAddLike, handleAddComment, allPosts] = useFeed(
-    loggedOnUser,
-    (PR) => {
-      typeof PR === "function"
-        ? setPostView((postsView) => PR(postsView))
-        : setPostView(PR);
-    }
-  );
+  ] = useNetwork(() => {
+    setDisplay("");
+  });
+  const [handleAddPost, handleAddLike, handleAddComment, allPosts] =
+    useFeed(loggedOnUser);
 
-  const [postsView, setPostView] = useState([]);
-  const [usersView, setUsersView] = useState([]);
-  const [addPostView, setAddPostView] = useState(false);
-  const [formView,setFormView] = useState(null);
-  const [profileView,setProfileView] = useState(null);
-  const [display, setDisplay] = useState({beforeLogin:'', afterLogin:'none'});
-  const centralContainerRef = useRef(null);
-  
-  const viewRegisterForm = () => {
-    setFormView('register')
-  };
-  const viewLoginForm = () => {
-    setFormView('login')
-  };
   const viewProfile = (user) => {
     setProfileView(user);
-    setAddPostView(null)
-    setUsersView([]);
-    setPostView(allPosts.filter((post) => post.userUp.id === user.id));
+    upOverFlow();
+  };
+  const upOverFlow = () => {
     centralContainerRef.current.scrollTop = 0;
   };
 
-  const viewUsersList = (users) => {
-    setUsersView(users)
-    setProfileView(null);
-    setAddPostView(false);
-    setPostView([]);
-   
-
-  };
-
-  const viewFormAddPost = () => {
-    setProfileView(null);
-    setUsersView([]);
-    setPostView([]);
-    setAddPostView(true);
-    
-  };
-
-  const viewFeed = (posts) => {
-    setProfileView(null);
-    setFormView(null)
-    setUsersView([]);
-    setAddPostView(false);
-    setPostView(
-     posts.filter(
-        (post) =>
-           loggedOnUser.friends.includes(post.userUp.id) ||
-           loggedOnUser.id === post.userUp.id
-      )
-    );
-    centralContainerRef.current.scrollTop = 0;
-
-  };
-    
   const viewResultSearch = (input) => {
-    setProfileView(null);
-    setUsersView([]);
-    setAddPostView(false);
-    postsView.length !== 0
-      ? viewFeed(allPosts.filter((post) => post.content.includes(input) || post.userUp.userName.includes(input)))
-      : viewUsersList(allUsers.filter((user) => user.userName.includes(input)));  
+    // setProfileView(null);
+    // setUsersView([]);
+    // setAddPostView(false);
+    // postsView.length !== 0
+    //   ? viewFeed(allPosts.filter((post) => post.content.includes(input) || post.userUp.userName.includes(input)))
+    //   : viewUsersList(allUsers.filter((user) => user.userName.includes(input)));
   };
   return (
-    <>
+    <div>
       <Header
         loggedOnUser={loggedOnUser}
-        display={display}
-        viewLoginForm={viewLoginForm}
-        viewRegisterForm={viewRegisterForm}
         viewProfile={viewProfile}
         viewResultSearch={viewResultSearch}
       ></Header>
@@ -126,54 +69,73 @@ function SocialNetwork() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "row", margin: "4%" }}>
-            <span style={{ flex: 2 }}></span>
+            <span style={{ flex: 1.5 }}></span>
             <span style={{ flex: 4 }}>
-              {formView === "register" ? (
-                <FormRegisterOrLogin
-                  buttonTitle={"Register"}
-                  onSubmit={handleRegister}
-                  validation={(inputs) =>
-                    inputs.userName.length < 2
-                      ? "must be at least 2 characters"
-                      : null
-                  }
-                />
-              ) : (
-                <></>
-              )}
-              {formView === "login" ? (
-                <FormRegisterOrLogin
-                  buttonTitle={"Login"}
-                  onSubmit={handleLogin}
-                />
-              ) : (
-                <></>
-              )}
+              <main>
+                <Routes>
+                  <Route
+                    path="login"
+                    element={
+                      <LoginPage
+                        handleLogin={handleLogin}
+                        loggedUser={loggedOnUser}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="register"
+                    element={<RegisterPage handleRegister={handleRegister} />}
+                  ></Route>
+                  <Route
+                    path="/"
+                    element={
+                      <HomePage
+                        loggedOnUser={loggedOnUser}
+                        postsView={allPosts}
+                        addLike={handleAddLike}
+                        addComment={handleAddComment}
+                        handleAddPost={handleAddPost}
+                        viewProfile={viewProfile}
+                        viewResultSearch={viewResultSearch}
+                      />
+                    }
+                  ></Route>
 
-              {profileView ? (
-                <Profile key={profileView.id} user={profileView} />
-              ) : (
-                <></>
-              )}
-              <UsersPage
-                users={usersView}
-                loggedOnUser={loggedOnUser}
-                viewProfile={viewProfile}
-                handleFriendRequest={handleFriendRequest}
-                handleConfirm={handleConfirm}
-              ></UsersPage>
-              {addPostView ? <FormAddPost onSubmit={handleAddPost} /> : <></>}
+                  <Route
+                    path="users"
+                    element={
+                      <UsersPage
+                        users={allUsers}
+                        loggedOnUser={loggedOnUser}
+                        viewProfile={viewProfile}
+                        handleFriendRequest={handleFriendRequest}
+                        handleConfirm={handleConfirm}
+                      />
+                    }
+                  ></Route>
+                  {profileView ? (
+                    <Route
+                      path={profileView.userName}
+                      element={
+                        <PersonalPage
+                          loggedOnUser={profileView}
+                          postslist={allPosts}
+                          handleAddPost={handleAddPost}
+                          addLike={handleAddLike}
+                          addComment={handleAddComment}
+                          viewProfile={viewProfile}
+                        />
+                      }
+                    ></Route>
+                  ) : (
+                    <></>
+                  )}
+                </Routes>
+              </main>
 
               <br />
-              <Feed
-                postslist={postsView}
-                addLike={handleAddLike}
-                addComment={handleAddComment}
-                viewProfile={viewProfile}
-                loggedOnUser={loggedOnUser}
-              />
             </span>
-            <span style={{ flex: 2 }}></span>
+            <span style={{ flex: 1.5 }}></span>
           </div>
 
           <br />
@@ -187,18 +149,18 @@ function SocialNetwork() {
           }}
         >
           <br />
-          <ButtonsMenu
-            display={display.afterLogin}
-            viewUsersList={() => {
-              viewUsersList(allUsers);
-            }}
-            viewFormAddPost={viewFormAddPost}
-            viewFeed={() => viewFeed(allPosts)}
-            viewMyProfile={() => viewProfile(loggedOnUser)}
-          />
+          {loggedOnUser ? (
+            <ButtonsMenu
+              upOverFlow={upOverFlow}
+              viewMyProfile={() => viewProfile(loggedOnUser)}
+              loggedOnUser={loggedOnUser}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 export default SocialNetwork;

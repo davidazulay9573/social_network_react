@@ -1,13 +1,12 @@
 
 import useStatePersist from "./useStatePersist";
 import { UserObj } from "../oop/objects";
-
-let loggedOnUser  = null;
-
+ let loggedOnUser = null;
 function useNetwork(
   setViewWhenLogin = () => {},
-  setViewWhenChange = () => {},
+ 
 ) {
+
   const [allUsers, setAllUsersAndSave] = useStatePersist("users", []);
   const handleRegister = (registersInput) => {
       const newUser = new UserObj(registersInput.userName, registersInput.img);
@@ -19,9 +18,11 @@ function useNetwork(
       (user) => user.userName === loginInput.userName
     );
     if (loggedOnUser) {
-      setViewWhenLogin(loggedOnUser);
+      setViewWhenLogin();
+      return loggedOnUser;
     } else {
       alert("You need to register");
+      return null;
     }
   };
   const handleFriendRequest = (user) => {
@@ -34,7 +35,7 @@ function useNetwork(
         return MapUser;
       })
     );
-     setViewWhenChange();
+    
   };
 
   const handleConfirm = (user) => {
@@ -54,7 +55,7 @@ function useNetwork(
         return mapUser;
       })
     );
-    setViewWhenChange();
+
   };
   return [
     loggedOnUser,
