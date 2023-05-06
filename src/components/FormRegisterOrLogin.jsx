@@ -1,51 +1,81 @@
-import useInput from "../hooks/useInput";
+import { useFormik } from "formik";
 import ProfilePicture from "./ProfilePicture";
+
 function FormRegisterOrLogin({ buttonTitle, onSubmit, validation }) {
-  const [input, handleInputChange, handleSubmit, error, displayInput] =
-    useInput({ userName: "", password: "", img: null }, onSubmit, validation);
+
+   const formik = useFormik({
+     validateOnMount: true,
+     initialValues: { userName: "", password: "", img: null},
+     validate: validation,
+     onSubmit(values,{resetForm}){
+       onSubmit(values)
+       resetForm()
+     },
+   });
 
   return (
     <div style={{ textAlign: "center" }}>
-      <span
-        style={{ height: "70px", width: "70px" }}
-        className="profilepicture"
-      >
+      <form >
+        <span
+          className="profilepicture"
+          style={{ height: "70px", width: "70px" }}
+        >
+          <input
+            name="img"
+            type='file'
+         
+            onChange={(event) => {
+              formik.setFieldValue("img", event.currentTarget.files[0]);
+              console.log(formik.values.img);
+            }}
+            onBlur={formik.handleBlur}
+          />
+          {formik.values.img && (
+            <ProfilePicture
+              user={
+                {
+                  // profilePicture: URL.createObjectURL(formik.values.img[0]),
+                }
+              }
+            ></ProfilePicture>
+          )}
+        </span>
+        <br />
+        <br />
         <input
-          name="img"
-          type="file"
-          onInput={handleInputChange}
-          style={{ display: displayInput }}
+          type="text"
+          {...formik.getFieldProps("userName")}
+          className="form-control"
+          placeholder="User name"
         />
-        <ProfilePicture user={{ profilePicture: input.img }}></ProfilePicture>
-      </span>
-      <br />
-      <br />
-      <input
-        name="userName"
-        type="text"
-        value={input.userName}
-        onChange={handleInputChange}
-        className="form-control"
-        placeholder="User name"
-      />
-      {error ? <div className="text-danger">{error}</div> : null}
-      <br />
+        {
+          <div className="text-danger">
+            {formik.touched.userName && formik.errors.userName}
+          </div>
+        }
+        <br />
 
-      <div style={{ display: "flex" }}>
         <input
-          name="password"
+          {...formik.getFieldProps("password")}
           type="password"
-          value={input.password}
-          onChange={handleInputChange}
           className="form-control"
           placeholder="Password"
         />
-      </div>
-      <br />
-      <button className="btn btn-dark" onClick={() => handleSubmit(input)}>
-        
-        {buttonTitle}
-      </button>
+        {
+          <div className="text-danger">
+            {formik.touched.password && formik.errors.password}
+          </div>
+        }
+
+        <br />
+        <button
+          type="submit"
+          className="btn btn-dark"
+          onClick={formik.handleSubmit}
+        >
+          {buttonTitle}
+        </button>
+      </form>
     </div>
   );
 }

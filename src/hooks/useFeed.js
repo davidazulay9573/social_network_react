@@ -1,13 +1,13 @@
 
 import useStatePersist from "./useStatePersist";
-import { PostObj,CommentObj } from "../oop/objects";
+import {PostObj, CommentObj} from "../oop/objects";
 
 function useFeed(loggedOnUser){
   const [allPosts, setAllPostsAndSave] = useStatePersist("posts", []);
  
   const handleAddPost = (content) => {
       const newPost = new PostObj(loggedOnUser, content);
-      setAllPostsAndSave((allPosts) => [...allPosts, newPost]);
+      setAllPostsAndSave([...allPosts, newPost]);
     };
 
    const handleAddLike = (postPR, commentPR) => {
@@ -21,16 +21,14 @@ function useFeed(loggedOnUser){
          : postPR.likes.push(loggedOnUser);
      }
 
-     const mapPosts = (posts) => {
-       return posts.map((post) => {
+     setAllPostsAndSave((allPosts) => allPosts.map((post) => {
          if (postPR.id === post.id) {
            return postPR;
          }
          return post;
-       });
-     };
-     setAllPostsAndSave((allPosts) => mapPosts(allPosts))
-     setPostRating(postPR);
+       }))
+   
+       setPostRating(postPR);
    };
 
   const handleAddComment = (postPR, content) => {

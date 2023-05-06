@@ -1,9 +1,8 @@
 
 import useStatePersist from "./useStatePersist";
-import { UserObj } from "../oop/objects";
+import { UserObj,Message } from "../oop/objects";
  let loggedOnUser = null;
 function useNetwork(
-  setViewWhenLogin = () => {},
  
 ) {
 
@@ -18,7 +17,7 @@ function useNetwork(
       (user) => user.userName === loginInput.userName
     );
     if (loggedOnUser) {
-      setViewWhenLogin();
+    
       return loggedOnUser;
     } else {
       alert("You need to register");
@@ -41,9 +40,10 @@ function useNetwork(
   const handleConfirm = (user) => {
     user.friends.push(loggedOnUser.id);
     loggedOnUser.friends.push(user.id);
-    const index = loggedOnUser.friendRequests.indexOf(user);
-    loggedOnUser.friendRequests.splice(index, 1);
-
+    
+    loggedOnUser.friendRequests = loggedOnUser.friendRequests.filter(
+      (request) => request.id === user.id
+    );
     setAllUsersAndSave((allUsers) =>
       allUsers.map((mapUser) => {
         if (mapUser.id === user.id) {
@@ -57,6 +57,10 @@ function useNetwork(
     );
 
   };
+  const handleSendMessage = (toUser,messageContent) => {
+      toUser.messages.push(new Message(loggedOnUser,messageContent))
+        setAllUsersAndSave( [...allUsers]);
+  }
   return [
     loggedOnUser,
     allUsers,
@@ -64,6 +68,7 @@ function useNetwork(
     handleLogin,
     handleFriendRequest,
     handleConfirm,
+    handleSendMessage
   ];
 }
 

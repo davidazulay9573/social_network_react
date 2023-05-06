@@ -19,8 +19,9 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
           flexDirection: "column",
           width: "85%",
           margin: "4%",
+          borderRadius: "15px",
           borderStyle: "inset",
-          backgroundColor: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.350)",
         }}
       >
         <div style={{ padding: "1%" }}>
@@ -30,47 +31,62 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
             viewProfile={viewProfile}
           ></ProfilePicture>
         </div>
+
         <div
           className="conteiner"
-          style={{ flex: 5, padding: "5%", whiteSpace: "pre-wrap" }}
+          style={{ flex: 5, padding: "5%", whiteSpace: "pre-wrap",
+          borderStyle: "inset", }}
         >
           {post.content}
           <br />
-        </div>   
+        </div>
         <div>
-          <span
-            onClick={() => {
-              likesList.length === 0
-                ? setLikesList(post.likes)
-                : setLikesList([]);
-            }}
-          >
-            {post.likes.length}
-            <i
-              style={{ flex: 0.5 }}
-              className={`bi bi-hand-thumbs-up${
-                post.likes
-                  .map((userLiked) => userLiked.id)
-                  .includes(loggedOnUser.id)
-                  ? "-fill"
-                  : ""
-              }`}
-              onClick={() => addLike(post)}
-            ></i>
-          </span>
-          <span>
-            {post.comments.length}
-            <i
-              style={{ flex: 0.5 }}
-              className="bi bi-chat"
+          <div>
+            <span>
+              {new Date(post.createAt).getDay() === new Date().getDay()
+                ? `${new Date(post.createAt).getHours()}:${new Date(
+                    post.createAt
+                  ).getMinutes()}`
+                : `${new Date(post.createAt).getDay()}/${
+                    new Date(post.createAt).getMonth() + 1
+                  }`}
+            </span>
+          </div>
+          <div>
+            <span
               onClick={() => {
-                comment.length === 0
-                  ? setComment(post.comments)
-                  : setComment([]);
-                setLikesList([]);
+                likesList.length === 0
+                  ? setLikesList(post.likes)
+                  : setLikesList([]);
               }}
-            ></i>
-          </span>
+            >
+              {post.likes.length}
+              <i
+                style={{ flex: 0.5 }}
+                className={`bi bi-hand-thumbs-up${
+                  post.likes
+                    .map((userLiked) => userLiked.id)
+                    .includes(loggedOnUser.id)
+                    ? "-fill"
+                    : ""
+                }`}
+                onClick={() => addLike(post)}
+              ></i>
+            </span>
+            <span>
+              {post.comments.length}
+              <i
+                style={{ flex: 0.5 }}
+                className="bi bi-chat"
+                onClick={() => {
+                  comment.length === 0
+                    ? setComment(post.comments)
+                    : setComment([]);
+                  setLikesList([]);
+                }}
+              ></i>
+            </span>
+          </div>
         </div>
         {likesList.map((userLiked) => (
           <ProfilePicture
@@ -99,8 +115,8 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
               placeholder="Type comment..."
               value={input}
               onChange={(e) => {
-                handleInputChange(e)
-                setLikesList([])
+                handleInputChange(e);
+                setLikesList([]);
               }}
             />
             <button className="btn btn-light" onClick={handleSubmit}>

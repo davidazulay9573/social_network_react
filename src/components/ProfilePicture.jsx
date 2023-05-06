@@ -1,8 +1,9 @@
-import { NavLink } from "react-router-dom";
-function ProfilePicture({user ,size,viewProfile}){ 
-    if(user !== null ) return (
+import { Link } from "react-router-dom";
+function ProfilePicture({ user, size, viewProfile = () => {} }) {
+  if (user !== null)
+    return (
       <div>
-        <NavLink to={user.userName} className='nav-link'>
+        <Link to={`${user.userName}`} className="nav-link">
           <span
             className="profilepicture"
             style={{ padding: "1%", width: size, height: size }}
@@ -15,7 +16,7 @@ function ProfilePicture({user ,size,viewProfile}){
               onClick={() => viewProfile(user)}
             ></img>
           </span>
-        </NavLink>
+        </Link>
 
         <p> {user.userName}</p>
       </div>

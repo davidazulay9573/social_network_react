@@ -7,6 +7,7 @@ export class UserObj {
     this.profilePicture = propilePicture;
     this.friends = [];
     this.friendRequests = [];
+    this.messages = [ ];
   }
 }
 
@@ -23,4 +24,13 @@ export class PostObj {
 }
 export class CommentObj extends PostObj{
   
+}
+
+export class Message {
+ constructor(sender,content){
+  this.sender = sender;
+  this.content = content;
+  this.createAt = new Date().getTime();
+  this.id = uuid();
+ }
 }

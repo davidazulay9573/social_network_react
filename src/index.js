@@ -15,7 +15,7 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
-document.body.style.backgroundColor = "rgba(0, 0, 0, 0.500)";
+document.body.style.backgroundColor = "white";
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

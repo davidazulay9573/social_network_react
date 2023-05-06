@@ -17,9 +17,10 @@ function Comment({ loggedOnUser, comment, addLike, viewProfile }) {
             borderRadius: "10px",
             borderStyle: "inset",
             backgroundColor: "wheat",
+            color:'black'
           }}
         >
-          <p>{comment.content}</p>
+          <p >{comment.content}</p>
           <span
             onClick={() => {
               likesList.length === 0

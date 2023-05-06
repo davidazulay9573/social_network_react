@@ -1,26 +1,50 @@
-import { NavLink } from "react-router-dom";
+import {Link, NavLink } from "react-router-dom";
 function ButtonsMenu(props) {
   return (
     <>
       <div style={{ textAlign: "center" }}>
-        <br />
-        <NavLink to={props.loggedOnUser.userName}>
-          <button className="btn btn-light" onClick={props.viewMyProfile}>
-            <i className="bi bi-person-fill"></i>
+        
+        <NavLink to="/" className="nav-link">
+          <button onClick={props.upOverFlow} className="btn btn-light">
+            <i
+              className={`bi bi-house-door${
+                props.currentRoutre === "/" ? "-fill" : ""
+              }`}
+            ></i>
           </button>
         </NavLink>
+      
+        <Link to={props.loggedOnUser.userName}>
+          <button className="btn btn-light" onClick={props.viewMyProfile}>
+            <i
+              className={`bi bi-person${
+                props.currentRoutre === "/" + props.loggedOnUser.userName
+                  ? "-fill"
+                  : ""
+              }`}
+            ></i>
+          </button>
+        </Link>
 
-        <br />
+  
         <NavLink to="/users" className="nav-link">
           <button onClick={props.upOverFlow} className="btn btn-light ">
-            <i className="bi bi-people-fill"></i>
+            <i
+              className={`bi bi-people${
+                props.currentRoutre === "/users" ? "-fill" : ""
+              }`}
+            ></i>
           </button>
         </NavLink>
-        {/* 
-        <button className="btn btn-light " onClick={props.viewFormAddPost}>
-          <i className="bi bi-file-earmark-plus-fill"></i>
-        </button>
-        <br /> */}
+        <NavLink to="/chat" className="nav-link">
+          <button className="btn btn-light ">
+            <i
+              className={`bi bi-chat${
+                props.currentRoutre === "/chat" ? "-fill" : ""
+              }`}
+            ></i>
+          </button>
+        </NavLink>
 
         {/* <button
           style={{ display: props.buttonsMenu }}
@@ -31,11 +55,6 @@ function ButtonsMenu(props) {
         </button> */}
 
         {/* <br /> */}
-        <NavLink to="/" className="nav-link">
-          <button onClick={props.upOverFlow} className="btn btn-light">
-            <i className="bi bi-stickies-fill"></i>
-          </button>
-        </NavLink>
 
         <br />
         {/* <button className="btn btn-light" onClick={props.viewFeed}>

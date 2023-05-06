@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import React, { useRef } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,useLocation } from "react-router-dom";
 
 import useNetwork from "../hooks/useNetwork";
 import useFeed from "../hooks/useFeed";
@@ -13,11 +13,13 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import PersonalPage from "./pages/PersonalPage";
-
+import ChatPage from "./pages/ChatPage";
 function SocialNetwork() {
-  const setDisplay = useState()[1];
   const centralContainerRef = useRef(null);
   const [profileView, setProfileView] = useState(null);
+  const location = useLocation()
+  const [currentRoutre,setCurrentRoutre] = useState()
+  useEffect(()=>{setCurrentRoutre(location.pathname)},[location])
 
   const [
     loggedOnUser,
@@ -26,9 +28,8 @@ function SocialNetwork() {
     handleLogin,
     handleFriendRequest,
     handleConfirm,
-  ] = useNetwork(() => {
-    setDisplay("");
-  });
+    handleSendMessage,
+  ] = useNetwork();
   const [handleAddPost, handleAddLike, handleAddComment, allPosts] =
     useFeed(loggedOnUser);
 
@@ -69,7 +70,7 @@ function SocialNetwork() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "row", margin: "4%" }}>
-            <span style={{ flex: 1.5 }}></span>
+            <span style={{ flex: 0.5 }}></span>
             <span style={{ flex: 4 }}>
               <main>
                 <Routes>
@@ -91,7 +92,7 @@ function SocialNetwork() {
                     element={
                       <HomePage
                         loggedOnUser={loggedOnUser}
-                        postsView={allPosts}
+                        postsView={ loggedOnUser && allPosts.filter(post => post.userUp.friends.includes(loggedOnUser.id) ||  post.userUp.id === loggedOnUser.id)}
                         addLike={handleAddLike}
                         addComment={handleAddComment}
                         handleAddPost={handleAddPost}
@@ -113,13 +114,16 @@ function SocialNetwork() {
                       />
                     }
                   ></Route>
+              
                   {profileView ? (
                     <Route
-                      path={profileView.userName}
+                      path={`${profileView.userName}`}
                       element={
                         <PersonalPage
                           loggedOnUser={profileView}
-                          postslist={allPosts}
+                          postslist={allPosts.filter(
+                            (post) => post.userUp.id === profileView.id
+                          )}
                           handleAddPost={handleAddPost}
                           addLike={handleAddLike}
                           addComment={handleAddComment}
@@ -130,12 +134,27 @@ function SocialNetwork() {
                   ) : (
                     <></>
                   )}
+                  {loggedOnUser && (
+                    <Route
+                      path="chat"
+                      element={
+                        <ChatPage
+                          loggedOnUser={loggedOnUser}
+                          usersList={allUsers.filter((user) =>
+                            user.friends.includes(loggedOnUser.id)
+                          )}
+                          handleSendMessage={handleSendMessage}
+                          viewProfile={viewProfile}
+                        />
+                      }
+                    ></Route>
+                  )}
                 </Routes>
               </main>
 
               <br />
             </span>
-            <span style={{ flex: 1.5 }}></span>
+            <span style={{ flex: 0.5 }}></span>
           </div>
 
           <br />
@@ -154,6 +173,7 @@ function SocialNetwork() {
               upOverFlow={upOverFlow}
               viewMyProfile={() => viewProfile(loggedOnUser)}
               loggedOnUser={loggedOnUser}
+              currentRoutre={currentRoutre}
             />
           ) : (
             <></>
