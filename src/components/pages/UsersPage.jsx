@@ -6,11 +6,11 @@ function UsersPage({
   viewProfile,
   handleFriendRequest,
   handleConfirm,
+  currentRoutre
 }) {
  
   if (loggedOnUser)
     return (
-
       <section style={{ backgroundColor: "rgba(0, 0, 0, 0.300)" }}>
         <div className="container py-5">
           <div className="row">
@@ -30,7 +30,7 @@ function UsersPage({
                     style={{ borderRadius: "10px", borderStyle: "inset" }}
                     className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0 p-4"
                   >
-                    <h3 className="my-9">Friends</h3>
+                    <h3 className="my-9">Friends:</h3>
                     <br />
                     <UsersList
                       userslist={users.filter((user) =>
@@ -38,6 +38,8 @@ function UsersPage({
                       )}
                       viewProfile={viewProfile}
                       loggedOnUser={loggedOnUser}
+                                            currentRoutre={currentRoutre}
+
                       onSubmits={[console.log, console.log]}
                       buttonsTitle={[
                         <i className="bi bi-chat-dots"></i>,
@@ -49,13 +51,15 @@ function UsersPage({
                     style={{ borderRadius: "10px", borderStyle: "inset" }}
                     className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0 p-4 "
                   >
-                    <h3>Friend requests</h3>
+                    <h3>Friend requests:</h3>
                     <UsersList
                       userslist={users.filter((user) =>
                         loggedOnUser.friendRequests.includes(user.id)
                       )}
                       viewProfile={viewProfile}
                       loggedOnUser={loggedOnUser}
+                     currentRoutre={currentRoutre}
+
                       onSubmits={[handleConfirm, console.log]}
                       buttonsTitle={[
                         <i className="bi bi-check-circle"></i>,
@@ -67,7 +71,7 @@ function UsersPage({
                     style={{ borderRadius: "10px", borderStyle: "inset" }}
                     className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0 p-4 "
                   >
-                    <h3>Find new friends</h3>
+                    <h3>Find new friends:</h3>
                     <UsersList
                       userslist={users.filter(
                         (user) =>
@@ -78,6 +82,8 @@ function UsersPage({
                       )}
                       viewProfile={viewProfile}
                       loggedOnUser={loggedOnUser}
+                       currentRoutre={currentRoutre}
+
                       onSubmits={[handleFriendRequest, console.log]}
                       buttonsTitle={[
                         <i className="bi bi-person-fill-add"></i>,

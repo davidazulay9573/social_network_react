@@ -1,26 +1,21 @@
-import useInput from "../hooks/useInput";
 
+import { useState } from "react";
 function FormAddPost({ onSubmit }) {
-  const [input, handleInputChange, handleSubmit,error] = useInput(
-    "",
-    onSubmit,
-    (input) =>
-      input.length < 2 ? "must be at least 2 characters" : null
-  );
+  const [input, setInput] = useState('');
   return (
     <div style={{ textAlign: "center" }}>
       <textarea
         value={input}
         className="form-control"
-        onInput={handleInputChange}
+        onInput={(e) => {setInput(e.target.value)}}
         type="text"
         placeholder="What do you say?"
       />
-      {error}
+     
       <br />
       <button
         className="btn btn-dark"
-        onClick={handleSubmit}
+        onClick={() => {onSubmit(input) ; setInput('')}}
       >
         Add post
       </button>

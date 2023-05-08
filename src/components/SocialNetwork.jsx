@@ -7,7 +7,6 @@ import useFeed from "../hooks/useFeed";
 
 import Header from "./Header";
 import ButtonsMenu from "./buttonsMenu";
-
 import UsersPage from "./pages/UsersPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -16,7 +15,7 @@ import PersonalPage from "./pages/PersonalPage";
 import ChatPage from "./pages/ChatPage";
 function SocialNetwork() {
   const centralContainerRef = useRef(null);
-  const [profileView, setProfileView] = useState(null);
+  const [userView, setuserView] = useState(null);
   const location = useLocation()
   const [currentRoutre,setCurrentRoutre] = useState()
   useEffect(()=>{setCurrentRoutre(location.pathname)},[location])
@@ -34,7 +33,7 @@ function SocialNetwork() {
     useFeed(loggedOnUser);
 
   const viewProfile = (user) => {
-    setProfileView(user);
+    setuserView(user);
     upOverFlow();
   };
   const upOverFlow = () => {
@@ -42,7 +41,7 @@ function SocialNetwork() {
   };
 
   const viewResultSearch = (input) => {
-    // setProfileView(null);
+    // setuserView(null);
     // setUsersView([]);
     // setAddPostView(false);
     // postsView.length !== 0
@@ -92,7 +91,7 @@ function SocialNetwork() {
                     element={
                       <HomePage
                         loggedOnUser={loggedOnUser}
-                        postsView={ loggedOnUser && allPosts.filter(post => post.userUp.friends.includes(loggedOnUser.id) ||  post.userUp.id === loggedOnUser.id)}
+                        postsView={allPosts}
                         addLike={handleAddLike}
                         addComment={handleAddComment}
                         handleAddPost={handleAddPost}
@@ -101,28 +100,14 @@ function SocialNetwork() {
                       />
                     }
                   ></Route>
-
-                  <Route
-                    path="users"
-                    element={
-                      <UsersPage
-                        users={allUsers}
-                        loggedOnUser={loggedOnUser}
-                        viewProfile={viewProfile}
-                        handleFriendRequest={handleFriendRequest}
-                        handleConfirm={handleConfirm}
-                      />
-                    }
-                  ></Route>
-              
-                  {profileView ? (
+                  {userView ? (
                     <Route
-                      path={`${profileView.userName}`}
+                      path={`${userView.userName}`}
                       element={
                         <PersonalPage
-                          loggedOnUser={profileView}
+                         userView={userView}
                           postslist={allPosts.filter(
-                            (post) => post.userUp.id === profileView.id
+                            (post) => post.userUp.id === userView.id
                           )}
                           handleAddPost={handleAddPost}
                           addLike={handleAddLike}
@@ -134,6 +119,20 @@ function SocialNetwork() {
                   ) : (
                     <></>
                   )}
+                  <Route
+                    path="users"
+                    element={
+                      <UsersPage
+                        users={allUsers}
+                        loggedOnUser={loggedOnUser}
+                        viewProfile={viewProfile}
+                        handleFriendRequest={handleFriendRequest}
+                        handleConfirm={handleConfirm}
+                        currentRoutre={currentRoutre}
+                      />
+                    }
+                  ></Route>
+
                   {loggedOnUser && (
                     <Route
                       path="chat"

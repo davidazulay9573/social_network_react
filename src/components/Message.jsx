@@ -1,22 +1,20 @@
 
-function Message({message,viewProfile,position }){
+function Message({message,position }){
   return (
-    <div className={`d-flex flex-row justify-content${position}`} >
-      <div>
-        <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
+    <div className={`d-flex flex-row justify-content${position}`}>
+        <div className="p-1 text-white rounded-2 bg-primary">
           {message.content}
-        </p>
-       
-          {new Date(message.createAt).getDay() === new Date().getDay()
-            
-            ? `${new Date(message.createAt).getHours()}:${new Date(
-                message.createAt
-              ).getMinutes()}`
-            : `${new Date(message.createAt).getDay()}/${new Date(
-                message.createAt
-              ).getMonth()+1}`}
-    
-      </div>
+          
+          <p className="small">
+            {new Date(message.createAt).getDay() === new Date().getDay()
+              ? `${new Date(message.createAt).getHours()}:${new Date(
+                  message.createAt
+                ).getMinutes()}`
+              : `${new Date(message.createAt).getDay()}/${
+                  new Date(message.createAt).getMonth() + 1
+                }`}
+          </p>
+        </div>
     </div>
   );
 }

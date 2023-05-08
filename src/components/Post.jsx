@@ -1,15 +1,15 @@
 import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import Comment from "./Comment";
-import useInput from "../hooks/useInput";
 
 export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
   const [comment, setComment] = useState([]);
   const [likesList,setLikesList] = useState([]);
-  const [input, handleInputChange] = useInput("");
+  const [input,setInput] = useState("");
    const handleSubmit = () => {
     addComment(post, input);
     setComment([post.comments.find((cmt) => cmt.content === input)]);
+    setInput('')
    }
   return (
     <div>
@@ -65,7 +65,7 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
                 style={{ flex: 0.5 }}
                 className={`bi bi-hand-thumbs-up${
                   post.likes
-                    .map((userLiked) => userLiked.id)
+                    .map(like => like.id)
                     .includes(loggedOnUser.id)
                     ? "-fill"
                     : ""
@@ -115,7 +115,7 @@ export function Post({ post, addLike, addComment, viewProfile, loggedOnUser }) {
               placeholder="Type comment..."
               value={input}
               onChange={(e) => {
-                handleInputChange(e);
+              setInput(e.target.value);
                 setLikesList([]);
               }}
             />

@@ -1,15 +1,16 @@
 
 import useStatePersist from "./useStatePersist";
 import { UserObj,Message } from "../oop/objects";
+import { useNavigate } from "react-router-dom";
  let loggedOnUser = null;
-function useNetwork(
- 
-) {
+function useNetwork() {
+  const navigate = useNavigate();
 
   const [allUsers, setAllUsersAndSave] = useStatePersist("users", []);
   const handleRegister = (registersInput) => {
       const newUser = new UserObj(registersInput.userName, registersInput.img);
       setAllUsersAndSave((allUsers) => [...allUsers, newUser]);
+     navigate('/login')
   };
 
   const handleLogin = (loginInput) => {
@@ -17,10 +18,11 @@ function useNetwork(
       (user) => user.userName === loginInput.userName
     );
     if (loggedOnUser) {
-    
+       navigate("/");
       return loggedOnUser;
     } else {
       alert("You need to register");
+       navigate("/register");
       return null;
     }
   };

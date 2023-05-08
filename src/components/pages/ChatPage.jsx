@@ -29,11 +29,11 @@ import Message from "../Message";
                           <ProfilePicture
                             user={user}
                             size="40px"
+                            viewProfile={viewProfile}
                           ></ProfilePicture>
                         </span>
                       ))}
                     </div>
-
                     <div
                       style={{ borderRadius: "10px", borderStyle: "inset" }}
                       className="col p-4"
@@ -44,6 +44,7 @@ import Message from "../Message";
                             <ProfilePicture
                               user={userOfCurrentChat}
                               size="40px"
+                              viewProfile={viewProfile}
                             ></ProfilePicture>
                             <input
                               onInput={(e) => {

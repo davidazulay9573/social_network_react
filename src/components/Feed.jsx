@@ -18,7 +18,8 @@ function Feed({postslist = [],addLike,addComment, viewProfile,loggedOnUser}){
             addLike={addLike}
             addComment={addComment}
             loggedOnUser={loggedOnUser}
-          />
+            />
+          // />:<> Add new friends to see posts</>
         ))}
     </div>
   );

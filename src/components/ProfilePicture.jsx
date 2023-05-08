@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
-function ProfilePicture({ user, size, viewProfile = () => {} }) {
+import {useNavigate } from "react-router-dom";
+function ProfilePicture({ user, size, viewProfile = () => {} ,currentRoutre }) { 
+  const navigate = useNavigate()
   if (user !== null)
     return (
       <div>
-        <Link to={`${user.userName}`} className="nav-link">
           <span
             className="profilepicture"
             style={{ padding: "1%", width: size, height: size }}
@@ -13,11 +13,9 @@ function ProfilePicture({ user, size, viewProfile = () => {} }) {
               style={{ flex: 2, width: "100%", height: "100%" }}
               src={user.profilePicture}
               alt=""
-              onClick={() => viewProfile(user)}
+              onClick={() =>{viewProfile(user); navigate('/'+user.userName)} }
             ></img>
           </span>
-        </Link>
-
         <p> {user.userName}</p>
       </div>
     );

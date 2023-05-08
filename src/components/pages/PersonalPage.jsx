@@ -1,7 +1,7 @@
 import ProfilePicture from "../ProfilePicture";
 import Feed from "../Feed";
 
-function PersonalPage(props) {
+function PersonalPage({userView, postslist,addLike,addComment,viewProfile}) {
 
   return (
     <section style={{ backgroundColor: "rgba(0, 0, 0, 0.100)" }}>
@@ -23,23 +23,23 @@ function PersonalPage(props) {
                   style={{ borderRadius: "10px", borderStyle: "inset" }}
                   className="col p-4 "
                 >
-                  {props.loggedOnUser ? (
+                  {userView ? (
                     <>
                       <br />
                       <ProfilePicture
-                        user={props.loggedOnUser}
+                        user={userView}
                         size="110px"
-                        viewProfile={props.viewProfile}
+                        viewProfile={viewProfile}
                       ></ProfilePicture>
 
                       <br />
                       <h3>Posts:</h3>
                       <br />
                       <Feed
-                        postslist={props.postslist}
-                        addLike={props.addLike}
-                        addComment={props.addComment}
-                        loggedOnUser={props.loggedOnUser}
+                        postslist={postslist}
+                        addLike={addLike}
+                        addComment={addComment}
+                        loggedOnUser={userView}
                       />
                     </>
                   ) : (

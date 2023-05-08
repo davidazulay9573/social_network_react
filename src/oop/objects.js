@@ -7,7 +7,8 @@ export class UserObj {
     this.profilePicture = propilePicture;
     this.friends = [];
     this.friendRequests = [];
-    this.messages = [ ];
+    this.posts = []
+    this.messages = [];
   }
 }
 

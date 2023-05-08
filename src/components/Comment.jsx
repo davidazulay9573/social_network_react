@@ -12,15 +12,16 @@ function Comment({ loggedOnUser, comment, addLike, viewProfile }) {
         ></ProfilePicture>
         <div
           style={{
+            flex: 2,
             margin: "2%",
             padding: "2%",
             borderRadius: "10px",
             borderStyle: "inset",
             backgroundColor: "wheat",
-            color:'black'
+            color: "black",
           }}
         >
-          <p >{comment.content}</p>
+          <p>{comment.content}</p>
           <span
             onClick={() => {
               likesList.length === 0
@@ -31,11 +32,7 @@ function Comment({ loggedOnUser, comment, addLike, viewProfile }) {
             <i
               style={{ flex: 0.5 }}
               className={`bi bi-hand-thumbs-up${
-                comment.likes
-                  .map((userLiked) => userLiked.id)
-                  .includes(loggedOnUser.id)
-                  ? "-fill"
-                  : ""
+                comment.likes.map(like => like.id).includes(loggedOnUser.id) ? "-fill" : ""
               }`}
               onClick={addLike}
             ></i>
